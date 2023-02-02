@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "834851319096",
+    "project_id": "movie-quotes-8aa8c",
+    "storage_bucket": "movie-quotes-8aa8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834851319096:android:677041ab32814a80b3a5cd",
+        "android_client_info": {
+          "package_name": "com.example.moviequotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834851319096-n631i0jhlsvfk81oli6kq9ghvkotecie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moviequotes",
+            "certificate_hash": "c0e9cb13932853b3cdf4577332de2dbcec626da7"
+          }
+        },
+        {
+          "client_id": "834851319096-srog2q8mo871hkolrqjrccfjilsgp56v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB54ZCZLvG7K68y64W6gnaVkyi0nD8GT04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834851319096-srog2q8mo871hkolrqjrccfjilsgp56v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
