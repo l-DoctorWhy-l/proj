@@ -4,38 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/start_bg"
     tools:context=".MainActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:scaleType="fitXY"
-        />
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         android:layout_weight="1"
-        android:shadowColor="@color/black"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="18"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/teal_700"
         android:textSize="55sp"
+        android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="2.4"
+        android:shadowDy="2.4"
+        android:shadowRadius="0.01"
         app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textView_app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:padding="15dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButton_login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/sign_in"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:button="@color/teal_700"
+            android:checked="true"
+            android:padding="15dp"
+            android:background="@drawable/enter_radio_selector"
+            android:layout_marginEnd="5dp"
+            android:textColor="@drawable/enter_text_selector"/>
+
+        <RadioButton
+            android:id="@+id/radioButton_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:background="@drawable/enter_radio_selector"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:button="@color/teal_700"
+            android:textColor="@drawable/enter_text_selector"
+            android:text="@string/registration"/>
+    </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>
