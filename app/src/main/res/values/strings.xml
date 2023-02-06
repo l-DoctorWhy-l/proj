@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Movie Quotes</string>
     <string name="registration">Зарегистрироваться</string>
+    <string name="radio_registration">Регистрация</string>
+    <string name="radio_sign_in">Вход</string>
     <string name="sign_in">Войти</string>
     <string name="pas">Пароль</string>
     <string name="email">Электронная почта</string>
