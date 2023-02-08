@@ -4,28 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/start_bg"
+    android:background="@drawable/start_window_bg"
     tools:context=".MainActivity">
 
 
-    <TextView
+    <LinearLayout
         android:id="@+id/textView_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_weight="1"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@color/teal_700"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:shadowColor="#000000"
-        android:shadowDx="2.4"
-        android:shadowDy="2.4"
-        android:shadowRadius="0.01"
-        app:layout_constraintBaseline_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:rotation="-5"
+        app:layout_constraintBottom_toTopOf="@id/sign_reg"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/title_ic"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="#000000"
+            android:shadowDx="2.4"
+            android:shadowDy="2.4"
+            android:shadowRadius="0.01"
+            android:text="@string/app_name_first"
+            android:textAlignment="textStart"
+            android:textColor="@color/teal_700"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="#000000"
+            android:shadowDx="2.4"
+            android:shadowDy="2.4"
+            android:shadowRadius="0.01"
+            android:text="@string/app_name_second"
+            android:textAlignment="textStart"
+            android:textColor="@color/grey"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/title_ic"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_margin="10dp"
+        android:rotation="5"
+        android:src="@drawable/film_ic_com"
+        app:layout_constraintBottom_toTopOf="@id/sign_reg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textView_app_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
@@ -35,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView_app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:padding="15dp"
         android:orientation="horizontal">
 
@@ -75,12 +109,13 @@
 
     <LinearLayout
         android:id="@+id/login_form"
+        tools:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/sign_reg"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -90,6 +125,7 @@
             android:layout_height="58dp"
             android:maxLines="1"
             android:maxLength="40"
+            android:autofillHints="emailAddress"
             android:ems="10"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
@@ -103,6 +139,7 @@
             android:id="@+id/editText_login_Password"
             android:layout_width="270dp"
             android:maxLines="1"
+            android:autofillHints="password"
             android:maxLength="20"
             android:layout_height="58dp"
             android:ems="10"
@@ -124,17 +161,29 @@
             android:layout_marginTop="40dp"
             />
 
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/error_textView_login"
+            android:textStyle="italic"
+            android:textSize="18sp"
+            android:textColor="@color/error"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Error"/>
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/reg_form"
         android:visibility="gone"
+        tools:visibility="visible"
         android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/sign_reg"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -142,6 +191,7 @@
             android:id="@+id/editText_reg_EmailAddress"
             android:layout_width="270dp"
             android:layout_height="58dp"
+            android:autofillHints="emailAddress"
             android:ems="10"
             android:maxLength="40"
             android:maxLines="1"
@@ -157,6 +207,7 @@
             android:layout_width="270dp"
             android:maxLines="1"
             android:layout_height="58dp"
+            android:autofillHints="name"
             android:ems="10"
             android:maxLength="20"
             android:hint="@string/name"
@@ -172,9 +223,24 @@
             android:layout_width="270dp"
             android:layout_height="58dp"
             android:ems="10"
+            android:autofillHints="password"
             android:maxLength="20"
             android:maxLines="1"
+            android:layout_marginBottom="20dp"
             android:hint="@string/pas"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:background="@drawable/enter_edittext_bg"
+            android:drawableStart="@drawable/baseline_lock_24"/>
+        <EditText
+            android:id="@+id/editText_reg_second_Password"
+            android:layout_width="270dp"
+            android:layout_height="58dp"
+            android:ems="10"
+            android:maxLength="20"
+            android:autofillHints="password"
+            android:maxLines="1"
+            android:hint="@string/second_pas"
             android:inputType="textPassword"
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
@@ -189,8 +255,19 @@
             android:textSize="25sp"
             android:layout_height="wrap_content"
             android:text="@string/registration"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/error_textView_reg"
+            android:textStyle="italic"
+            android:textSize="18sp"
+            android:textColor="@color/error"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Error"/>
 
     </LinearLayout>
 

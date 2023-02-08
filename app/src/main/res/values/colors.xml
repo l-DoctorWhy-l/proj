@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="start_bg">#ffeaeaea</color>
     <color name="grey">#ff565656</color>
+    <color name="error">#BC4242</color>
 </resources>

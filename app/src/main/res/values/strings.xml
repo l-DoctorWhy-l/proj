@@ -1,10 +1,13 @@
 <resources>
-    <string name="app_name">Movie\nQuotes</string>
+    <string name="app_name">Movie Quotes</string>
+    <string name="app_name_first">Movie</string>
+    <string name="app_name_second">Quotes</string>
     <string name="registration">Зарегистрироваться</string>
     <string name="radio_registration">Регистрация</string>
     <string name="radio_sign_in">Вход</string>
     <string name="sign_in">Войти</string>
     <string name="pas">Пароль</string>
+    <string name="second_pas">Подтвердите пароль</string>
     <string name="email">Электронная почта</string>
     <string name="name">Имя пользователя</string>
 </resources>

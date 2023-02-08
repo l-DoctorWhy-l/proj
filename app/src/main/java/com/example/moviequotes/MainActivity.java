@@ -1,5 +1,7 @@
 package com.example.moviequotes;
 
+import static com.example.moviequotes.Validator.validateEmail;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -31,38 +33,63 @@ public class MainActivity extends AppCompatActivity {
                         binding.regForm.setVisibility(View.VISIBLE);
                         break;
                 }
+                binding.errorTextViewLogin.setVisibility(View.INVISIBLE);
+                binding.errorTextViewReg.setVisibility(View.INVISIBLE);
             }
         });
 
         binding.buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(binding.editTextLoginEmailAddress.getText().toString().equals("") || !binding.editTextLoginEmailAddress.getText().toString().contains("@")){
-                    Toast.makeText(getApplicationContext(),"Неверный Email!", Toast.LENGTH_SHORT).show();
+                String errorText =  Validator.validateEmail(binding.editTextLoginEmailAddress.getText().toString());
+                if(errorText != null){
+                    binding.errorTextViewLogin.setText(errorText);
+                    binding.errorTextViewLogin.setVisibility(View.VISIBLE);
                     return;
                 }
-                if(binding.editTextLoginPassword.getText().toString().length() < 8){
-                    Toast.makeText(getApplicationContext(),"Пароль должен содержать минимум 8 символов!", Toast.LENGTH_SHORT).show();
+                errorText =  Validator.validatePassword(binding.editTextLoginPassword.getText().toString());
+                if(errorText != null ){
+                    binding.errorTextViewLogin.setText(errorText);
+                    binding.errorTextViewLogin.setVisibility(View.VISIBLE);
                     return;
                 }
+                binding.errorTextViewLogin.setVisibility(View.GONE);
             }
         });
 
         binding.buttonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(binding.editTextRegEmailAddress.getText().toString().equals("") || !binding.editTextRegEmailAddress.getText().toString().contains("@")){
-                    Toast.makeText(getApplicationContext(),"Неверный Email!", Toast.LENGTH_SHORT).show();
+                String errorText =  Validator.validateEmail(binding.editTextRegEmailAddress.getText().toString());
+                if(errorText != null){
+                    binding.errorTextViewReg.setText(errorText);
+                    binding.errorTextViewReg.setVisibility(View.VISIBLE);
                     return;
                 }
-                if(binding.editTextRegName.getText().toString().length() < 4){
-                    Toast.makeText(getApplicationContext(),"Слишком короткое имя пользователя!", Toast.LENGTH_SHORT).show();
+                errorText =  Validator.validateName(binding.editTextRegName.getText().toString());
+                if(errorText != null){
+                    binding.errorTextViewReg.setText(errorText);
+                    binding.errorTextViewReg.setVisibility(View.VISIBLE);
                     return;
                 }
-                if(binding.editTextRegPassword.getText().toString().length() < 8){
-                    Toast.makeText(getApplicationContext(),"Пароль должен содержать минимум 8 символов!", Toast.LENGTH_SHORT).show();
+                errorText =  Validator.validatePassword(binding.editTextRegPassword.getText().toString());
+                if(errorText != null ){
+                    binding.errorTextViewReg.setText(errorText);
+                    binding.errorTextViewReg.setVisibility(View.VISIBLE);
                     return;
                 }
+                errorText =  Validator.validateConfirmPassword(binding.editTextRegSecondPassword.getText().toString());
+                if(errorText != null ){
+                    binding.errorTextViewReg.setText(errorText);
+                    binding.errorTextViewReg.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (!binding.editTextRegPassword.getText().toString().equals(binding.editTextRegSecondPassword.getText().toString())){
+                    binding.errorTextViewReg.setText("Passwords are not equals");
+                    binding.errorTextViewReg.setVisibility(View.VISIBLE);
+                    return;
+                }
+                binding.errorTextViewReg.setVisibility(View.GONE);
             }
         });
     }
