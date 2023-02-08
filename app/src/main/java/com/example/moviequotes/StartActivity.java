@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -40,11 +41,20 @@ public class StartActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int checked_id) {
                 switch (checked_id){
                     case R.id.radioButton_login:
-                        binding.loginForm.setVisibility(View.VISIBLE);
+                        binding.regForm.setEnabled(false);
+                        binding.regForm.startAnimation(AnimationUtils.loadAnimation(StartActivity.this,R.anim.leave_left_out));
                         binding.regForm.setVisibility(View.GONE);
+                        binding.loginForm.setEnabled(true);
+                        binding.loginForm.startAnimation(AnimationUtils.loadAnimation(StartActivity.this,R.anim.leave_right_in));
+                        binding.loginForm.setVisibility(View.VISIBLE);
+
                         break;
                     case R.id.radioButton_reg:
+                        binding.loginForm.setEnabled(false);
+                        binding.loginForm.startAnimation(AnimationUtils.loadAnimation(StartActivity.this,R.anim.leave_right_out));
                         binding.loginForm.setVisibility(View.GONE);
+                        binding.regForm.setEnabled(true);
+                        binding.regForm.startAnimation(AnimationUtils.loadAnimation(StartActivity.this,R.anim.leave_left_in));
                         binding.regForm.setVisibility(View.VISIBLE);
                         break;
                 }
