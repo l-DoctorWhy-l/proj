@@ -12,14 +12,20 @@ import android.widget.Toast;
 
 import com.example.moviequotes.databinding.ActivityStartBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class StartActivity extends AppCompatActivity {
     ActivityStartBinding binding;
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
+    FirebaseDatabase db;
+    DatabaseReference users;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +33,8 @@ public class StartActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        users = db.getReference("users");
 
     }
 
@@ -122,7 +130,7 @@ public class StartActivity extends AppCompatActivity {
                     return;
                 }
                 if (!binding.editTextRegPassword.getText().toString().equals(binding.editTextRegSecondPassword.getText().toString())){
-                    binding.errorTextViewReg.setText("Passwords are not equals");
+                    binding.errorTextViewReg.setText("Passwords are not equal");
                     binding.errorTextViewReg.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -131,8 +139,19 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Intent intent = new Intent(StartActivity.this, MainActivity.class);
-                            startActivity(intent);
+                            User user = new User(binding.editTextRegName.getText().toString(),binding.editTextRegEmailAddress.getText().toString(), binding.editTextRegPassword.getText().toString());
+                            users.child(user.getUserName()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(StartActivity.this, "Не удалось создать аккаунт(",Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }else{
                             Toast.makeText(StartActivity.this, "Не удалось создать аккаунт(",Toast.LENGTH_SHORT).show();
                         }
