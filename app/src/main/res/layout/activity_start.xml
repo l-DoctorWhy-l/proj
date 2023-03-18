@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/start_window_bg"
+    android:background="@drawable/app_bg"
     tools:context=".StartActivity">
 
 
@@ -30,7 +30,7 @@
             android:shadowRadius="0.01"
             android:text="@string/app_name_first"
             android:textAlignment="textStart"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/bar_bg"
             android:textSize="50sp"
             android:textStyle="bold"
             />
@@ -110,7 +110,6 @@
 
     <LinearLayout
         android:id="@+id/login_form"
-        tools:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -136,6 +135,7 @@
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
             android:drawableStart="@drawable/baseline_email_24"
+            android:drawablePadding="5dp"
             />
 
         <EditText
@@ -152,17 +152,20 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
-            android:drawableStart="@drawable/baseline_lock_24"/>
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="5dp"/>
 
         <Button
             android:id="@+id/button_login"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:textStyle="bold"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/white"
+            android:background="@color/bar_bg"
             android:textSize="25sp"
             android:layout_height="wrap_content"
             android:text="@string/sign_in"
+            android:padding="10dp"
             android:layout_marginTop="40dp"
             />
 
@@ -181,7 +184,7 @@
     <LinearLayout
         android:id="@+id/reg_form"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="invisible"
         android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -208,6 +211,7 @@
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
             android:drawableStart="@drawable/baseline_email_24"
+            android:drawablePadding="5dp"
             />
         <EditText
             android:id="@+id/editText_reg_name"
@@ -225,6 +229,7 @@
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
             android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="5dp"
             />
 
         <EditText
@@ -242,12 +247,14 @@
             android:textColorHint="@color/white"
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
-            android:drawableStart="@drawable/baseline_lock_24"/>
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="5dp"/>
         <EditText
             android:id="@+id/editText_reg_second_Password"
             android:layout_width="270dp"
             android:layout_height="58dp"
             android:ems="10"
+
             android:textColor="@color/white"
             android:maxLength="20"
             android:autofillHints="password"
@@ -257,14 +264,16 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:background="@drawable/enter_edittext_bg"
-            android:drawableStart="@drawable/baseline_lock_24"/>
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="5dp"/>
 
         <Button
             android:id="@+id/button_reg"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:textStyle="bold"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/white"
+            android:background="@color/bar_bg"
             android:textSize="25sp"
             android:padding="10dp"
             android:layout_height="wrap_content"

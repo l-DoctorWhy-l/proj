@@ -6,13 +6,11 @@ public class User {
     public String userName;
     public String email;
     public String password;
-    public ArrayList<Long> favourites;
 
     public User(String userName, String email, String password) {
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.favourites = null;
     }
 
     public String getUserName() {
@@ -39,11 +37,4 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Long> getFavourites() {
-        return favourites;
-    }
-
-    public void setFavourites(ArrayList<Long> favourites) {
-        this.favourites = favourites;
-    }
 }

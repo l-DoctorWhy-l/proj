@@ -43,6 +43,8 @@ public class StartActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null)
+            moveToMain();
 
         binding.signReg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -91,8 +93,7 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Intent intent = new Intent(StartActivity.this,MainActivity.class);
-                            startActivity(intent);
+                            moveToMain();
                         }
                         else{
                             Toast.makeText(StartActivity.this, "Неверный логин или пароль",Toast.LENGTH_SHORT).show();
@@ -159,5 +160,10 @@ public class StartActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void moveToMain() {
+        Intent intent = new Intent(StartActivity.this,MainActivity.class);
+        startActivity(intent);
     }
 }
