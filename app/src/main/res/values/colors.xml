@@ -13,4 +13,5 @@
     <color name="light_red">#DC7F7F</color>
     <color name="bar_bg">#1D2329</color>
     <color name="light_green">#06CF97</color>
+    <color name="transparent">#00000000</color>
 </resources>

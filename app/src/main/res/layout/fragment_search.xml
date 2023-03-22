@@ -58,6 +58,7 @@
             android:background="@drawable/enter_edittext_bg"
             />
         <ImageButton
+            android:id="@+id/searchButton"
             android:layout_gravity="center_vertical"
             android:layout_width="48dp"
             android:layout_height="48dp"
