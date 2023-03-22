@@ -6,8 +6,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/app_bg"
-    tools:context=".SearchFragment"
-    tools:showIn="@id/content_layout">
+    tools:context=".SearchFragment">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,19 +33,43 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:inputType="text"
-        android:autofillHints="text"
-        android:layout_height="48dp"
-        android:ems="15"
-        android:hint="Search"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:paddingStart="20dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/enter_edittext_bg"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <EditText
+            android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="0dp"
+            android:inputType="text"
+            android:autofillHints="text"
+            android:layout_height="48dp"
+            android:ems="13"
+            android:layout_gravity="center_vertical"
+            android:hint="Search"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
+            android:paddingStart="20dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/enter_edittext_bg"
+            />
+        <ImageButton
+            android:layout_gravity="center_vertical"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerInside"
+            android:background="@drawable/search_button_shape_bg"
+            android:src="@drawable/baseline_search_default"
+            app:tint="@color/white"
+            android:layout_margin="10dp"
+
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

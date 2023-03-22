@@ -30,9 +30,107 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.recyclerview.widget.RecyclerView
+
+    <LinearLayout
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="50"/>
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_weight="2"
+            android:layout_gravity="top|center_horizontal"
+            android:id="@+id/profileImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src=""
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_weight="0.5"
+            android:id="@+id/profileUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your username"
+            android:layout_gravity="top|center_horizontal"
+            android:textSize="32sp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_weight="2"
+            android:layout_gravity="center_horizontal|top"
+            android:id="@+id/profileEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your email"
+            android:textColor="@color/light_green"
+            android:textStyle="normal"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:gravity="center_horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="Sex: "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/light_green"
+                    android:text="Male"/>
+            </LinearLayout>
+
+            <RadioGroup
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="50dp"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
+            </RadioGroup>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"/>
+        <Button
+            android:layout_weight="0.1"
+
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:background="@drawable/logout_button_bg"
+            android:text="Sign Out"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

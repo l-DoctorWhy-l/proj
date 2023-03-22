@@ -31,8 +31,12 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityStartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null)
+            moveToMain();
+
         db = FirebaseDatabase.getInstance();
         users = db.getReference("users");
 
@@ -42,9 +46,6 @@ public class StartActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null)
-            moveToMain();
 
         binding.signReg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -141,7 +142,7 @@ public class StartActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             User user = new User(binding.editTextRegName.getText().toString(),binding.editTextRegEmailAddress.getText().toString(), binding.editTextRegPassword.getText().toString());
-                            users.child(user.getUserName()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            users.push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Intent intent = new Intent(StartActivity.this, MainActivity.class);

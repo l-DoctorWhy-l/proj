@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="100"
         android:background="@drawable/app_bg">
-        <include layout="@layout/fragment_search"/>
     </FrameLayout>
 
 
