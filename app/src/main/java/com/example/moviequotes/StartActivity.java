@@ -18,8 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class StartActivity extends AppCompatActivity {
     ActivityStartBinding binding;
@@ -142,11 +147,10 @@ public class StartActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             User user = new User(binding.editTextRegName.getText().toString(),binding.editTextRegEmailAddress.getText().toString(), binding.editTextRegPassword.getText().toString());
-                            users.push().setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            users.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Intent intent = new Intent(StartActivity.this, MainActivity.class);
-                                    startActivity(intent);
+                                    moveToMain();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -165,6 +169,8 @@ public class StartActivity extends AppCompatActivity {
 
     private void moveToMain() {
         Intent intent = new Intent(StartActivity.this,MainActivity.class);
+        intent.putExtra("user", Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         startActivity(intent);
     }
+
 }

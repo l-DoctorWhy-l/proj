@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.moviequotes.databinding.ActivityMainBinding;
 
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        String currentUserId = getIntent().getExtras().get("user").toString();
+        Toast.makeText(this,currentUserId,Toast.LENGTH_SHORT).show();
         replaceFragment(new HomeFragment());
         binding.menu.setSelectedItemId(R.id.home);
 
