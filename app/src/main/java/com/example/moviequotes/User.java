@@ -6,17 +6,24 @@ public class User {
     ArrayList<String> likes;
     public String userName;
     public String email;
-    public String password;
 
     public String sex;
+
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
     public User() {
     }
 
-    public User(String userName, String email, String password) {
+    public User(String userName, String email) {
         this.userName = userName;
         this.email = email;
-        this.password = password;
         this.likes = new ArrayList<>(1000);
         this.sex = "Male";
     }
@@ -33,16 +40,18 @@ public class User {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "likes=" + likes +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
+
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void addLike(String id){

@@ -1,47 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/item_bg"
     android:padding="10dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:layout_margin="5dp">
-    <TextView
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/item_film"
-        android:id="@+id/item_desc"
-        android:ems="24"
-        tools:text="@tools:sample/lorem/random"
-        android:ellipsize="end"
-        android:textSize="11sp"
-        android:maxLines="6"
-        android:textColor="@color/white"
-        android:minLines="4"
+    <LinearLayout
+        android:layout_marginEnd="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"/>
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        android:layout_weight="4">
+        <TextView
+            android:id="@+id/item_desc"
+            tools:text="@tools:sample/lorem/random"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:minLines="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/item_film"
-        tools:text="@tools:sample/lorem/random"
-        android:maxLines="1"
-        android:minLines="1"
-        android:maxEms="10"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:drawableStartCompat="@drawable/baseline_circle_24"
-        android:drawablePadding="5dp"/>
-    <CheckBox
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/item_desc"
-        android:id="@+id/like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/item_film"
+            tools:text="@tools:sample/lorem/random"
+            android:maxLines="1"
+            android:minLines="1"
+            android:maxEms="12"
+            android:textSize="14sp"
+            android:layout_gravity="bottom"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/baseline_circle_24"
+            android:drawablePadding="5dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_weight="0"
+     android:orientation="vertical"
+     android:gravity="center">
+        <ImageButton
+         android:id="@+id/like"
+         android:layout_width="30dp"
+         android:layout_height="30dp"
+         android:src="@drawable/baseline_favorite_border_24"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
+</LinearLayout>

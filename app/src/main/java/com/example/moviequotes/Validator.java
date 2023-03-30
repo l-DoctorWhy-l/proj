@@ -50,6 +50,8 @@ public class Validator {
             return ("Field cannot be empty");
         } else if (name.length() < 4) {
             return ("The name must be at least 4 characters long");
+        } else if (name.length() > 15){
+            return ("The name must be shorter than 15 characters");
         } else {
             return null;
         }

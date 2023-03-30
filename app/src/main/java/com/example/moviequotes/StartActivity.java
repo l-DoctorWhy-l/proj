@@ -146,7 +146,7 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            User user = new User(binding.editTextRegName.getText().toString(),binding.editTextRegEmailAddress.getText().toString(), binding.editTextRegPassword.getText().toString());
+                            User user = new User(binding.editTextRegName.getText().toString(),binding.editTextRegEmailAddress.getText().toString());
                             users.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -169,8 +169,8 @@ public class StartActivity extends AppCompatActivity {
 
     private void moveToMain() {
         Intent intent = new Intent(StartActivity.this,MainActivity.class);
-        intent.putExtra("user", Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         startActivity(intent);
+        finish();
     }
 
 }
