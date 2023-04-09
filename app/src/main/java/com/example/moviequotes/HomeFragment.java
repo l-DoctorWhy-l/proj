@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +60,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+
 
     @Override
     public void onStop() {

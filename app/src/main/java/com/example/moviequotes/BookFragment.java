@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviequotes.databinding.FragmentBookBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -58,10 +60,11 @@ public class BookFragment extends Fragment {
         binding.mainRecyclerView.setHasFixedSize(true);
 
         quotesArrayList = new ArrayList<>();
-        quoteItemAdapter = new QuoteItemAdapter(getContext(),quotesArrayList);
+        quoteItemAdapter = new FavouritesQuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
 
-        likedQuotesRef.addValueEventListener(new ValueEventListener() {
+        // Инициализация списка
+        likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -69,22 +72,22 @@ public class BookFragment extends Fragment {
                 for (DataSnapshot ds: snapshot.getChildren()){
                     String currentId = ds.child("id").getValue(String.class);
                     assert currentId != null;
-                    quotesRef.child(currentId).addValueEventListener(new ValueEventListener() {
+                    quotesRef.child(currentId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Quote quote = snapshot.getValue(Quote.class);
+                        public void onSuccess(DataSnapshot dataSnapshot) {
+                            Quote quote = dataSnapshot.getValue(Quote.class);
+                            quote.setFavourite(true);
                             quotesArrayList.add(quote);
-                            System.out.println("ADD  " + quote);
+                            quoteItemAdapter.notifyItemInserted(quotesArrayList.indexOf(quote));
+                            System.out.println("Цитата добавлена в список");
                         }
-
+                    }).addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                        public void onFailure(@NonNull Exception e) {
 
                         }
                     });
                 }
-                System.out.println(quotesArrayList);
-                quoteItemAdapter.notifyDataSetChanged();
             }
 
             @Override

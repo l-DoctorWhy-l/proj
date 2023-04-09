@@ -1,24 +1,24 @@
 package com.example.moviequotes;
 
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
-import android.support.v4.media.session.MediaSessionCompat;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.ImageSwitcher;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moviequotes.databinding.QuoteItemBinding;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.moviequotes.databinding.QuoteItemWindowBinding;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,9 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyViewHolder> {
 
@@ -65,50 +63,35 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull QuoteItemAdapter.MyViewHolder holder, int position) {
+
+
         Quote quote = list.get(position);
         holder.desc.setText(quote.getDesc());
         holder.film.setText(quote.getFilm());
+
         if(quote.isFavourite()){
             holder.like.setImageResource(R.drawable.baseline_favorite_24);
         } else
             holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
+
+
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!quote.isFavourite()){
-                    likedQuotesRef.push().setValue(new Quote(quote.getId())).addOnSuccessListener(unused -> {
+                    addToFavourites(view, quote.getId()).addOnSuccessListener(o -> {
                         quote.setFavourite(true);
                         holder.like.setImageResource(R.drawable.baseline_favorite_24);
-                        Toast.makeText(view.getContext(), "Цитата успешно добавлена в ваши любимые)", Toast.LENGTH_SHORT).show();
-                    }).addOnFailureListener(runnable -> {
-                        Toast.makeText(view.getContext(), "Упс, что-то пошло не так..", Toast.LENGTH_SHORT).show();
                     });
+
                 } else {
-                    final ValueEventListener findEqualId = new ValueEventListener() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot ds: snapshot.getChildren()){
-                                System.out.println(ds.child("id").getValue(String.class).equals(quote.getId()));
-                                if (ds.child("id").getValue(String.class).equals(quote.getId())) {
-                                   likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused ->{
-                                       Toast.makeText(view.getContext(), "Цитата успешно удалена из любимых", Toast.LENGTH_SHORT).show();
-                                       quote.setFavourite(false);
-                                       holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
-                                   });
-                                   break;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    };
-                    likedQuotesRef.addListenerForSingleValueEvent(findEqualId);
+                    deleteLike(view, quote,holder);
                 }
             }
+        });
+
+        holder.moreInfo.setOnClickListener(b -> {
+            showQuoteCard(context, quote);
         });
 
     }
@@ -122,6 +105,7 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
 
         TextView desc, film;
         ImageButton like;
+        LinearLayout moreInfo;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,7 +113,60 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
             desc = itemView.findViewById(R.id.item_desc);
             film = itemView.findViewById(R.id.item_film);
             like = itemView.findViewById(R.id.like);
+            moreInfo = itemView.findViewById(R.id.itemInfo);
+
         }
+    }
+
+    Task addToFavourites(View view, String id){
+         return likedQuotesRef.push().setValue(new Quote(id)).addOnSuccessListener(unused -> {
+            Toast.makeText(view.getContext(), "Цитата успешно добавлена в ваши любимые)", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(runnable -> {
+            Toast.makeText(view.getContext(), "Упс, что-то пошло не так..", Toast.LENGTH_SHORT).show();
+        });
+
+    }
+
+
+    void deleteLike(View view, Quote quote,@NonNull QuoteItemAdapter.MyViewHolder holder){
+        final ValueEventListener findEqualId = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    if (ds.child("id").getValue(String.class).equals(quote.getId())) {
+
+                        likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused -> {
+                            Toast.makeText(view.getContext(), "Цитата успешно удалена из любимых", Toast.LENGTH_SHORT).show();
+                            quote.setFavourite(false);
+                            holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
+                        });
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        };
+        likedQuotesRef.addListenerForSingleValueEvent(findEqualId);
+    }
+
+    void showQuoteCard(Context context, Quote quote){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.quote_item_window);
+        TextView item_desc, item_film;
+        item_film = dialog.findViewById(R.id.item_film_more);
+        item_desc = dialog.findViewById(R.id.item_desc_more);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        System.out.println(quote.getDesc());
+        item_desc.setText(quote.getDesc());
+        item_film.setText(quote.getFilm());
+        dialog.show();
     }
 
 

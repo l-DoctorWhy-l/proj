@@ -129,7 +129,6 @@ public class ProfileFragment extends Fragment {
                 profile = snapshot.getValue(User.class);
                 assert profile != null;
                 setProfileData();
-
             }
 
             @Override
