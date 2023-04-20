@@ -36,7 +36,6 @@
         <TextView
             android:id="@+id/item_film_more"
             tools:text="@tools:sample/lorem/random"
-            android:maxLines="2"
             android:minLines="1"
             android:maxEms="12"
             android:textSize="14sp"
