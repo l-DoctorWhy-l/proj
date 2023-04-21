@@ -37,7 +37,7 @@
             android:id="@+id/item_film_more"
             tools:text="@tools:sample/lorem/random"
             android:minLines="1"
-            android:maxEms="12"
+            android:maxEms="18"
             android:textSize="14sp"
             android:layout_gravity="bottom"
             android:textColor="@color/white"
