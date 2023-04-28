@@ -29,23 +29,11 @@ import java.sql.SQLOutput;
 
 public class ProfileFragment extends Fragment {
     FragmentProfileBinding binding;
-    FirebaseAuth mAuth;
-    FirebaseDatabase db;
-    FirebaseUser currentUser;
-    DatabaseReference user, userDB;
     User profile;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        assert currentUser != null;
-        String currentUserId = currentUser.getUid();
-        db = FirebaseDatabase.getInstance();
-        userDB = db.getReference("users");
-        user = userDB.child(currentUserId);
 
         getUserDataFromDB();
 
@@ -93,11 +81,11 @@ public class ProfileFragment extends Fragment {
                     binding.editProfileUsername.setVisibility(View.GONE);
                     binding.profileSexLayout.setVisibility(View.VISIBLE);
                     binding.editProfileSex.setVisibility(View.GONE);
-                    user.child("userName").setValue(binding.editProfileUsername.getText().toString());
+                    Network.user.child("userName").setValue(binding.editProfileUsername.getText().toString());
                     if(binding.radioBtnM.isChecked()){
-                        user.child("sex").setValue("Male");
+                        Network.user.child("sex").setValue("Male");
                     } else {
-                        user.child("sex").setValue("Female");
+                        Network.user.child("sex").setValue("Female");
                     }
                 } else{
                     Toast.makeText(getContext(),Validator.validateName(binding.editProfileUsername.getText().toString()), Toast.LENGTH_SHORT).show();
@@ -109,7 +97,7 @@ public class ProfileFragment extends Fragment {
         binding.signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth.signOut();
+                Network.mAuth.signOut();
                 Intent i = new Intent(getContext(),StartActivity.class);
                 startActivity(i);
                 getActivity().finish();
@@ -136,9 +124,8 @@ public class ProfileFragment extends Fragment {
 
             }
         };
-        user.addValueEventListener(profileDataListener);
+        Network.user.addValueEventListener(profileDataListener);
     }
-
     void setProfileData(){
         binding.profileUsername.setText(profile.getUserName());
         binding.profileEmail.setText(profile.getEmail());

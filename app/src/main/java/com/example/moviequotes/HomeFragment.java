@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment {
         quoteItemAdapter = new QuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
 
+        final ValueEventListener likedQuotesListener = Network.createLikedQuotesEventListener(likedQuotesIdList);
 
 
 
@@ -96,11 +97,11 @@ public class HomeFragment extends Fragment {
                     if (likedQuotesIdList.contains(ds.getKey())) {
                         assert quote != null;
                         quote.setFavourite(true);
-                        System.out.println("Like установлен!");
                     }
                     quotesArrayList.add(quote);
-                    Collections.shuffle(quotesArrayList);
                 }
+                Collections.shuffle(quotesArrayList);
+
                 quoteItemAdapter.notifyDataSetChanged();
             }
 
@@ -112,27 +113,7 @@ public class HomeFragment extends Fragment {
 
         quotesRef.addValueEventListener(quotesListener);
 
-
-        final ValueEventListener likedQuotesListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likedQuotesIdList.clear();
-                for (DataSnapshot ds: snapshot.getChildren()){
-                    assert ds != null;
-                    likedQuotesIdList.add(ds.child("id").getValue(String.class));
-                    System.out.println(likedQuotesIdList);
-                    quotesRef.addListenerForSingleValueEvent(quotesListener);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
         likedQuotesRef.addListenerForSingleValueEvent(likedQuotesListener);
-
 
 
         return binding.getRoot();

@@ -40,6 +40,7 @@
         android:layout_margin="5dp">
 
         <EditText
+            android:id="@+id/searchEditText"
             android:layout_weight="1"
             android:focusableInTouchMode="true"
             android:clickable="true"
@@ -50,7 +51,8 @@
             android:layout_height="48dp"
             android:ems="13"
             android:layout_gravity="center_vertical"
-            android:hint="Search"
+            android:hint="Поиск"
+            android:textSize="16sp"
             android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:paddingStart="20dp"
@@ -72,7 +74,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/searchIsEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Начните вводить цитату или фильм"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"/>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecyclerView"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="50"

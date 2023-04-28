@@ -28,12 +28,6 @@ import java.util.ArrayList;
 public class BookFragment extends Fragment {
 
     FragmentBookBinding binding;
-    FirebaseAuth mAuth;
-
-    FirebaseDatabase db;
-    DatabaseReference quotesRef;
-    DatabaseReference likedQuotesRef;
-    String currentUserId;
 
     QuoteItemAdapter quoteItemAdapter;
     ArrayList<Quote> quotesArrayList;
@@ -47,14 +41,6 @@ public class BookFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentBookBinding.inflate(inflater,container,false);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        assert currentUser != null;
-        currentUserId = currentUser.getUid();
-        db = FirebaseDatabase.getInstance();
-        quotesRef = db.getReference().child("quotes");
-        likedQuotesRef = db.getReference().child("users").child(currentUserId).child("likes");
-
 
         binding.mainRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.mainRecyclerView.setHasFixedSize(true);
@@ -63,8 +49,7 @@ public class BookFragment extends Fragment {
         quoteItemAdapter = new FavouritesQuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
 
-        // Инициализация списка
-        likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Network.likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -72,14 +57,13 @@ public class BookFragment extends Fragment {
                 for (DataSnapshot ds: snapshot.getChildren()){
                     String currentId = ds.child("id").getValue(String.class);
                     assert currentId != null;
-                    quotesRef.child(currentId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    Network.quotesRef.child(currentId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
                             Quote quote = dataSnapshot.getValue(Quote.class);
                             quote.setFavourite(true);
                             quotesArrayList.add(quote);
                             quoteItemAdapter.notifyItemInserted(quotesArrayList.indexOf(quote));
-                            System.out.println("Цитата добавлена в список");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

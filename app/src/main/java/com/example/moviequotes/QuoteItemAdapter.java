@@ -32,11 +32,6 @@ import java.util.ArrayList;
 public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyViewHolder> {
 
     Context context;
-    FirebaseAuth mAuth;
-
-    FirebaseDatabase db;
-    DatabaseReference likedQuotesRef;
-    String currentUserId;
     ArrayList<Quote> list;
 
     public QuoteItemAdapter(Context context, ArrayList<Quote> list) {
@@ -49,15 +44,6 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
     @Override
     public QuoteItemAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.quote_item, parent, false);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        assert currentUser != null;
-        currentUserId = currentUser.getUid();
-        db = FirebaseDatabase.getInstance();
-        likedQuotesRef = db.getReference().child("users").child(currentUserId).child("likes");
-
-
-
         return new MyViewHolder(v);
     }
 
@@ -119,7 +105,7 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
     }
 
     Task addToFavourites(View view, String id){
-         return likedQuotesRef.push().setValue(new Quote(id)).addOnSuccessListener(unused -> {
+         return Network.likedQuotesRef.push().setValue(new Quote(id)).addOnSuccessListener(unused -> {
             Toast.makeText(view.getContext(), "Цитата успешно добавлена в ваши любимые)", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(runnable -> {
             Toast.makeText(view.getContext(), "Упс, что-то пошло не так..", Toast.LENGTH_SHORT).show();
@@ -136,7 +122,7 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
                 for (DataSnapshot ds: snapshot.getChildren()){
                     if (ds.child("id").getValue(String.class).equals(quote.getId())) {
 
-                        likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused -> {
+                        Network.likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused -> {
                             Toast.makeText(view.getContext(), "Цитата успешно удалена из любимых", Toast.LENGTH_SHORT).show();
                             quote.setFavourite(false);
                             holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
@@ -152,7 +138,7 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
             }
 
         };
-        likedQuotesRef.addListenerForSingleValueEvent(findEqualId);
+        Network.likedQuotesRef.addListenerForSingleValueEvent(findEqualId);
     }
 
     void showQuoteCard(Context context, Quote quote){

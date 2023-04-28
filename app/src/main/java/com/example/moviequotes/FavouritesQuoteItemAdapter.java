@@ -27,7 +27,7 @@ public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
                 for (DataSnapshot ds: snapshot.getChildren()){
                     if (ds.child("id").getValue(String.class).equals(quote.getId())) {
 
-                        likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused -> {
+                        Network.likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused -> {
                             Toast.makeText(view.getContext(), "Цитата успешно удалена из любимых", Toast.LENGTH_SHORT).show();
                             quote.setFavourite(false);
                             holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
@@ -46,5 +46,5 @@ public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
             }
 
         };
-        likedQuotesRef.addListenerForSingleValueEvent(findEqualId);}
+        Network.likedQuotesRef.addListenerForSingleValueEvent(findEqualId);}
 }
