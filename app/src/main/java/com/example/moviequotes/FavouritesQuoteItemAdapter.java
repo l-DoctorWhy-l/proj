@@ -12,7 +12,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import io.reactivex.schedulers.Schedulers;
+
 public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
+    BookDB bookDB;
+    QuoteDAO quoteDAO;
 
     public FavouritesQuoteItemAdapter(Context context, ArrayList<Quote> list) {
         super(context, list);
@@ -20,6 +24,8 @@ public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
 
     @Override
     void deleteLike(View view, Quote quote, @NonNull MyViewHolder holder) {
+        bookDB = BookDB.getInstance(context);
+        quoteDAO = bookDB.quoteDAO();
         final ValueEventListener findEqualId = new ValueEventListener() {
 
             @Override
@@ -30,10 +36,10 @@ public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
                         Network.likedQuotesRef.child(ds.getKey()).removeValue().addOnSuccessListener(unused -> {
                             Toast.makeText(view.getContext(), "Цитата успешно удалена из любимых", Toast.LENGTH_SHORT).show();
                             quote.setFavourite(false);
+                            quoteDAO.deleteQuote(quote.getId()).subscribeOn(Schedulers.io()).subscribe();
                             holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
                             notifyItemRemoved(list.indexOf(quote));
                             list.remove(quote);
-                            System.out.println(list);
                         });
                         break;
                     }

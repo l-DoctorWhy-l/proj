@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
         binding.signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Network.mAuth.signOut();
+                Network.logOut();
                 Intent i = new Intent(getContext(),StartActivity.class);
                 startActivity(i);
                 getActivity().finish();

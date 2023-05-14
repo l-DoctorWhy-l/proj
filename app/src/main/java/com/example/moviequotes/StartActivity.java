@@ -28,22 +28,13 @@ import java.util.Objects;
 
 public class StartActivity extends AppCompatActivity {
     ActivityStartBinding binding;
-    FirebaseAuth mAuth;
-    FirebaseDatabase db;
-    DatabaseReference users;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityStartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null)
+        if(Network.currentUser != null)
             moveToMain();
-
-        db = FirebaseDatabase.getInstance();
-        users = db.getReference("users");
 
     }
 
@@ -95,7 +86,7 @@ public class StartActivity extends AppCompatActivity {
                     return;
                 }
                 binding.errorTextViewLogin.setVisibility(View.GONE);
-                mAuth.signInWithEmailAndPassword(binding.editTextLoginEmailAddress.getText().toString(),binding.editTextLoginPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                Network.mAuth.signInWithEmailAndPassword(binding.editTextLoginEmailAddress.getText().toString(),binding.editTextLoginPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
@@ -142,12 +133,12 @@ public class StartActivity extends AppCompatActivity {
                     return;
                 }
                 binding.errorTextViewReg.setVisibility(View.GONE);
-                mAuth.createUserWithEmailAndPassword(binding.editTextRegEmailAddress.getText().toString(),binding.editTextRegPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                Network.mAuth.createUserWithEmailAndPassword(binding.editTextRegEmailAddress.getText().toString(),binding.editTextRegPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             User user = new User(binding.editTextRegName.getText().toString(),binding.editTextRegEmailAddress.getText().toString());
-                            users.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            Network.userDB.child(Network.mAuth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     moveToMain();

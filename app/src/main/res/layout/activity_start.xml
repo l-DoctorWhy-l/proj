@@ -7,7 +7,6 @@
     android:background="@drawable/app_bg"
     tools:context=".StartActivity">
 
-
     <LinearLayout
         android:id="@+id/textView_app_name"
         android:layout_width="wrap_content"

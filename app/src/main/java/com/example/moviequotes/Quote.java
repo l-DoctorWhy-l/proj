@@ -1,10 +1,17 @@
 package com.example.moviequotes;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "quotes_table")
 public class Quote {
     private String film;
     private String desc;
     private boolean favourite;
     private String id;
+
+    @PrimaryKey(autoGenerate = true)
+    int key;
 
     public Quote(String id) {
         this.id = id;

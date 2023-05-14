@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
             holder.like.setImageResource(R.drawable.baseline_favorite_24);
         } else
             holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
+        Log.d("GGWP", quote.toString() + " " + position);
 
 
         holder.like.setOnClickListener(new View.OnClickListener() {

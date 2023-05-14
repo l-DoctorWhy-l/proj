@@ -23,6 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class BookFragment extends Fragment {
@@ -31,6 +36,10 @@ public class BookFragment extends Fragment {
 
     QuoteItemAdapter quoteItemAdapter;
     ArrayList<Quote> quotesArrayList;
+
+    BookDB bookDB;
+    QuoteDAO quoteDAO;
+    Disposable quotesListDisposable;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +51,18 @@ public class BookFragment extends Fragment {
 
         binding = FragmentBookBinding.inflate(inflater,container,false);
 
+
+        bookDB = BookDB.getInstance(requireContext());
+        quoteDAO = bookDB.quoteDAO();
+
+        // Загружаем все цитаты из базы данных
+        quotesListDisposable = quoteDAO
+                .getAllQuotes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onQuotesLoaded);
+
+
         binding.mainRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.mainRecyclerView.setHasFixedSize(true);
 
@@ -49,40 +70,63 @@ public class BookFragment extends Fragment {
         quoteItemAdapter = new FavouritesQuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
 
-        Network.likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                quotesArrayList.clear();
-                for (DataSnapshot ds: snapshot.getChildren()){
-                    String currentId = ds.child("id").getValue(String.class);
-                    assert currentId != null;
-                    Network.quotesRef.child(currentId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            Quote quote = dataSnapshot.getValue(Quote.class);
-                            quote.setFavourite(true);
-                            quotesArrayList.add(quote);
-                            quoteItemAdapter.notifyItemInserted(quotesArrayList.indexOf(quote));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+        if(Network.isOnline(requireContext())) {
+            Network.likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    quoteDAO.deleteAllQuotes().subscribeOn(Schedulers.io())
+                            .subscribe();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String currentId = ds.child("id").getValue(String.class);
+                        assert currentId != null;
+                        Network.quotesRef.child(currentId).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                Quote quote = dataSnapshot.getValue(Quote.class);
+                                quote.setFavourite(true);
+                                quoteDAO
+                                        .addQuote(quote)
+                                        .subscribeOn(Schedulers.io())
+                                        .subscribe();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+                    quoteItemAdapter.notifyDataSetChanged();
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
 
 
 
 
         return binding.getRoot();
+    }
+
+    public void onQuotesLoaded(List<Quote> quotes) {
+        while (!quotesArrayList.isEmpty()){
+            quoteItemAdapter.notifyItemRemoved(0);
+            quotesArrayList.remove(0);
+        }
+        for(int i = 0; i < quotes.size(); i++){
+            quotesArrayList.add(0,quotes.get(i));
+            quoteItemAdapter.notifyItemInserted(0);
+        }
+
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        quotesListDisposable.dispose();
     }
 }
