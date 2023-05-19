@@ -1,6 +1,5 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,15 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.moviequotes.RoomDatabase.BookDB;
+import com.example.moviequotes.Adapters.FavouritesQuoteItemAdapter;
+import com.example.moviequotes.Network.Network;
+import com.example.moviequotes.Entities.Quote;
+import com.example.moviequotes.RoomDatabase.QuoteDAO;
+import com.example.moviequotes.Adapters.QuoteItemAdapter;
 import com.example.moviequotes.databinding.FragmentBookBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,10 +33,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BookFragment extends Fragment {
 
-    FragmentBookBinding binding;
-
+    public FragmentBookBinding binding;
     QuoteItemAdapter quoteItemAdapter;
     ArrayList<Quote> quotesArrayList;
+    ArrayList<Quote> downloadedQuotesArrayList = new ArrayList<>();
 
     BookDB bookDB;
     QuoteDAO quoteDAO;
@@ -44,6 +45,8 @@ public class BookFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,11 +73,11 @@ public class BookFragment extends Fragment {
         quoteItemAdapter = new FavouritesQuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
 
-        if(Network.isOnline(requireContext())) {
+        if(Network.isOnline(requireContext()) && Network.likedQuotesRef != null) {
             Network.likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    downloadedQuotesArrayList.clear();
                     quoteDAO.deleteAllQuotes().subscribeOn(Schedulers.io())
                             .subscribe();
                     for (DataSnapshot ds : snapshot.getChildren()) {
@@ -85,9 +88,11 @@ public class BookFragment extends Fragment {
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 Quote quote = dataSnapshot.getValue(Quote.class);
                                 quote.setFavourite(true);
+                                downloadedQuotesArrayList.add(quote);
                                 quoteDAO
                                         .addQuote(quote)
                                         .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -97,7 +102,6 @@ public class BookFragment extends Fragment {
                             }
                         });
                     }
-                    quoteItemAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -119,10 +123,12 @@ public class BookFragment extends Fragment {
             quotesArrayList.remove(0);
         }
         for(int i = 0; i < quotes.size(); i++){
-            quotesArrayList.add(0,quotes.get(i));
-            quoteItemAdapter.notifyItemInserted(0);
+            if(!quotesArrayList.contains(quotes.get(i))){
+                quotesArrayList.add(0,quotes.get(i));
+                quoteItemAdapter.notifyItemInserted(0);
+            }
         }
-
+        quotesListDisposable.dispose();
     }
     @Override
     public void onDestroy() {

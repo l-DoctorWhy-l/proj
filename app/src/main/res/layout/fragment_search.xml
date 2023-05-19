@@ -6,7 +6,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/app_bg"
-    tools:context=".SearchFragment">
+    tools:context=".Fragments.SearchFragment">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

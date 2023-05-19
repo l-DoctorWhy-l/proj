@@ -1,4 +1,4 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,9 +6,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
+import com.example.moviequotes.Fragments.BookFragment;
+import com.example.moviequotes.Fragments.HomeFragment;
+import com.example.moviequotes.Fragments.ProfileFragment;
+import com.example.moviequotes.Fragments.SearchFragment;
+import com.example.moviequotes.R;
 import com.example.moviequotes.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

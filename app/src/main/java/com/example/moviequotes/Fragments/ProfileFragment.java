@@ -1,9 +1,6 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Fragments;
 
-import static com.example.moviequotes.R.drawable.girl;
 
-import android.content.Intent;
-import android.hardware.usb.UsbRequest;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,27 +12,33 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.moviequotes.Network.Network;
+import com.example.moviequotes.R;
+import com.example.moviequotes.Entities.User;
+import com.example.moviequotes.RoomDatabase.BookDB;
+import com.example.moviequotes.RoomDatabase.QuoteDAO;
+import com.example.moviequotes.Validator;
 import com.example.moviequotes.databinding.FragmentProfileBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.SQLOutput;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class ProfileFragment extends Fragment {
     FragmentProfileBinding binding;
     User profile;
+    BookDB bookDB;
+    QuoteDAO quoteDAO;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         getUserDataFromDB();
+        bookDB = BookDB.getInstance(requireContext());
+        quoteDAO = bookDB.quoteDAO();
 
 
 
@@ -98,8 +101,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Network.logOut();
-                Intent i = new Intent(getContext(),StartActivity.class);
-                startActivity(i);
+                quoteDAO.deleteAllQuotes().subscribeOn(Schedulers.io()).subscribe();
                 getActivity().finish();
             }
         });

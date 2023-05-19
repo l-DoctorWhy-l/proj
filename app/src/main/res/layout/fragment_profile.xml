@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/app_bg"
     android:orientation="vertical"
-    tools:context=".ProfileFragment">
+    tools:context=".Fragments.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"

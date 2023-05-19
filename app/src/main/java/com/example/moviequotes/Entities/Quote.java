@@ -1,4 +1,4 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -11,7 +11,7 @@ public class Quote {
     private String id;
 
     @PrimaryKey(autoGenerate = true)
-    int key;
+    public int key;
 
     public Quote(String id) {
         this.id = id;

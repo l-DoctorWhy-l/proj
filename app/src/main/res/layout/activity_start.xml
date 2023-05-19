@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/app_bg"
-    tools:context=".StartActivity">
+    tools:context=".Activities.StartActivity">
 
     <LinearLayout
         android:id="@+id/textView_app_name"
@@ -177,7 +177,7 @@
             android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Error"/>
+            android:text=""/>
 
     </LinearLayout>
     <LinearLayout
@@ -289,7 +289,7 @@
             android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Error"/>
+            android:text=""/>
 
     </LinearLayout>
 

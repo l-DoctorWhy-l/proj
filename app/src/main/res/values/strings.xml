@@ -10,6 +10,7 @@
     <string name="second_pas">Подтвердите пароль</string>
     <string name="email">Электронная почта</string>
     <string name="name">Имя пользователя</string>
+    <string name="favourites">Favourites</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

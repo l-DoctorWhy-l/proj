@@ -1,4 +1,4 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,24 +10,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.moviequotes.Network.Network;
+import com.example.moviequotes.R;
+import com.example.moviequotes.Entities.User;
+import com.example.moviequotes.Validator;
 import com.example.moviequotes.databinding.ActivityStartBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 public class StartActivity extends AppCompatActivity {
-    ActivityStartBinding binding;
+    public ActivityStartBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,7 +154,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void moveToMain() {
-        Intent intent = new Intent(StartActivity.this,MainActivity.class);
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }

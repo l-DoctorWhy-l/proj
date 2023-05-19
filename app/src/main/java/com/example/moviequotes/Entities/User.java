@@ -1,4 +1,4 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Entities;
 
 import java.util.ArrayList;
 

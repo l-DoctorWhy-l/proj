@@ -1,4 +1,4 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import androidx.annotation.NonNull;
 
+import com.example.moviequotes.Entities.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,7 @@ public class Network {
     final public static DatabaseReference userDB = Network.db.getReference("users");
     public static String currentUserId;
     public static DatabaseReference user;
+
 
     static {
         if(currentUser != null) {
@@ -79,6 +81,7 @@ public class Network {
     public static void logOut(){
         mAuth.signOut();
         currentUser = null;
+
     }
     public static void init(){
         if(currentUser != null) {

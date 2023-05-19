@@ -1,4 +1,4 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.moviequotes.Network.Network;
+import com.example.moviequotes.Entities.Quote;
+import com.example.moviequotes.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -14,9 +17,7 @@ import java.util.ArrayList;
 
 import io.reactivex.schedulers.Schedulers;
 
-public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
-    BookDB bookDB;
-    QuoteDAO quoteDAO;
+public class FavouritesQuoteItemAdapter extends QuoteItemAdapter {
 
     public FavouritesQuoteItemAdapter(Context context, ArrayList<Quote> list) {
         super(context, list);
@@ -24,8 +25,6 @@ public class FavouritesQuoteItemAdapter extends QuoteItemAdapter{
 
     @Override
     void deleteLike(View view, Quote quote, @NonNull MyViewHolder holder) {
-        bookDB = BookDB.getInstance(context);
-        quoteDAO = bookDB.quoteDAO();
         final ValueEventListener findEqualId = new ValueEventListener() {
 
             @Override

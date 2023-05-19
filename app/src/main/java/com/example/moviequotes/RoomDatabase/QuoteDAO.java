@@ -1,8 +1,10 @@
-package com.example.moviequotes;
+package com.example.moviequotes.RoomDatabase;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
+import com.example.moviequotes.Entities.Quote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,9 @@ public interface QuoteDAO {
 
     @Insert
     Completable addQuote(Quote quote);
+
+    @Insert
+    Completable addManyQuotes(ArrayList<Quote> quotes);
 
     // Метод чтения необходимой цитаты из таблицы по id
     @Query("SELECT * FROM quotes_table WHERE id = :id")

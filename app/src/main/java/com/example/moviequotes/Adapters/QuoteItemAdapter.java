@@ -1,11 +1,10 @@
-package com.example.moviequotes;
+package com.example.moviequotes.Adapters;
 
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,26 +17,34 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moviequotes.databinding.QuoteItemWindowBinding;
+import com.example.moviequotes.Network.Network;
+import com.example.moviequotes.Entities.Quote;
+import com.example.moviequotes.R;
+import com.example.moviequotes.RoomDatabase.BookDB;
+import com.example.moviequotes.RoomDatabase.QuoteDAO;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import io.reactivex.schedulers.Schedulers;
+
 public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyViewHolder> {
 
-    Context context;
-    ArrayList<Quote> list;
+    public Context context;
+    public ArrayList<Quote> list;
+    BookDB bookDB;
+    QuoteDAO quoteDAO;
 
     public QuoteItemAdapter(Context context, ArrayList<Quote> list) {
         this.context = context;
         this.list = list;
+        bookDB = BookDB.getInstance(context);
+        quoteDAO = bookDB.quoteDAO();
     }
 
 
@@ -60,14 +67,13 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
             holder.like.setImageResource(R.drawable.baseline_favorite_24);
         } else
             holder.like.setImageResource(R.drawable.baseline_favorite_border_24);
-        Log.d("GGWP", quote.toString() + " " + position);
 
 
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!quote.isFavourite()){
-                    addToFavourites(view, quote.getId()).addOnSuccessListener(o -> {
+                    addToFavourites(view, quote).addOnSuccessListener(o -> {
                         quote.setFavourite(true);
                         holder.like.setImageResource(R.drawable.baseline_favorite_24);
                     });
@@ -91,9 +97,9 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView desc, film;
-        ImageButton like;
-        LinearLayout moreInfo;
+        public TextView desc, film;
+        public ImageButton like;
+        public LinearLayout moreInfo;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,9 +112,10 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
         }
     }
 
-    Task addToFavourites(View view, String id){
-         return Network.likedQuotesRef.push().setValue(new Quote(id)).addOnSuccessListener(unused -> {
+    Task addToFavourites(View view, Quote quote){
+         return Network.likedQuotesRef.push().setValue(new Quote(quote.getId())).addOnSuccessListener(unused -> {
             Toast.makeText(view.getContext(), "Цитата успешно добавлена в ваши любимые)", Toast.LENGTH_SHORT).show();
+            quoteDAO.addQuote(quote).subscribeOn(Schedulers.io()).subscribe();
         }).addOnFailureListener(runnable -> {
             Toast.makeText(view.getContext(), "Упс, что-то пошло не так..", Toast.LENGTH_SHORT).show();
         });

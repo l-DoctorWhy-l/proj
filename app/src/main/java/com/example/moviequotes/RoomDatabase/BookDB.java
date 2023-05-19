@@ -1,10 +1,12 @@
-package com.example.moviequotes;
+package com.example.moviequotes.RoomDatabase;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.moviequotes.Entities.Quote;
 
 @Database(entities = {Quote.class}, version = 1)
 public abstract class BookDB extends RoomDatabase {

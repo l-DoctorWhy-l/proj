@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/app_bg"
     android:orientation="vertical"
-    tools:context=".BookFragment">
+    tools:context=".Fragments.BookFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
@@ -23,7 +23,7 @@
             android:layout_marginStart="40dp"
             android:fontFamily="@font/fascinate"
             android:padding="8dp"
-            android:text="Favourites"
+            android:text="@string/favourites"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"
