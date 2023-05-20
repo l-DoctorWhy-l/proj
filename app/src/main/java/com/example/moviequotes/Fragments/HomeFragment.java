@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment {
 
         final ValueEventListener likedQuotesListener = Network.createLikedQuotesEventListener(likedQuotesIdList);
 
+        likedQuotesRef.addValueEventListener(likedQuotesListener);
 
 
         final ValueEventListener quotesListener = new ValueEventListener() {
@@ -113,7 +114,6 @@ public class HomeFragment extends Fragment {
 
         quotesRef.addValueEventListener(quotesListener);
 
-        likedQuotesRef.addListenerForSingleValueEvent(likedQuotesListener);
 
 
         return binding.getRoot();

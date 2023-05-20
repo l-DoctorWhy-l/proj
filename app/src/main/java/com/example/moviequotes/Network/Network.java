@@ -84,7 +84,8 @@ public class Network {
 
     }
     public static void init(){
-        if(currentUser != null) {
+        if(currentUser == null) {
+            currentUser = mAuth.getCurrentUser();
             currentUserId = currentUser.getUid();
             user = userDB.child(currentUserId);
             likedQuotesRef = db.getReference().child("users").child(currentUserId).child("likes");

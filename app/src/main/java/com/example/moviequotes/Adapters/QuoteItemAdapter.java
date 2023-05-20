@@ -73,10 +73,12 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
             @Override
             public void onClick(View view) {
                 if (!quote.isFavourite()){
-                    addToFavourites(view, quote).addOnSuccessListener(o -> {
-                        quote.setFavourite(true);
-                        holder.like.setImageResource(R.drawable.baseline_favorite_24);
-                    });
+                    Task result = addToFavourites(view, quote);
+                    if(result != null)
+                        result.addOnSuccessListener(o -> {
+                            quote.setFavourite(true);
+                            holder.like.setImageResource(R.drawable.baseline_favorite_24);
+                        });
 
                 } else {
                     deleteLike(view, quote,holder);
@@ -113,13 +115,17 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
     }
 
     Task addToFavourites(View view, Quote quote){
-         return Network.likedQuotesRef.push().setValue(new Quote(quote.getId())).addOnSuccessListener(unused -> {
+        if(Network.likedQuotesRef == null){
+            Toast.makeText(view.getContext(), "Упс, что-то пошло не так..", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+         Task task = Network.likedQuotesRef.push().setValue(new Quote(quote.getId())).addOnSuccessListener(unused -> {
             Toast.makeText(view.getContext(), "Цитата успешно добавлена в ваши любимые)", Toast.LENGTH_SHORT).show();
             quoteDAO.addQuote(quote).subscribeOn(Schedulers.io()).subscribe();
         }).addOnFailureListener(runnable -> {
             Toast.makeText(view.getContext(), "Упс, что-то пошло не так..", Toast.LENGTH_SHORT).show();
         });
-
+        return task;
     }
 
 
