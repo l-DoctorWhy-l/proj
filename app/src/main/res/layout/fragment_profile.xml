@@ -22,7 +22,7 @@
             android:layout_marginStart="40dp"
             android:fontFamily="@font/fascinate"
             android:padding="8dp"
-            android:text="Profile"
+            android:text="@string/profile_title"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -57,7 +57,7 @@
             android:layout_marginEnd="10dp"
             android:background="@drawable/save_settings_button_bg"
             android:padding="0dp"
-            android:text="Save"
+            android:text="@string/save_button_text"
             android:textColor="@color/bar_bg"
             android:textStyle="bold"
             android:visibility="gone" />
@@ -78,7 +78,7 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_weight="0.1"
             android:gravity="center_horizontal"
-            android:text="Your email"
+            android:text="@string/profile_email"
             android:textColor="@color/light_green"
             android:textSize="20sp"
             android:textStyle="normal" />
@@ -92,7 +92,7 @@
             android:layout_weight="0.5"
             android:gravity="center_horizontal"
             android:padding="0dp"
-            android:text="Your username"
+            android:text="@string/profile_username"
             android:textColor="@color/white"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -111,7 +111,7 @@
             android:layout_marginBottom="15dp"
             android:padding="5dp"
             android:paddingStart="15dp"
-            android:text="Your username"
+            android:text="@string/profile_username"
             android:textColor="@color/white"
             android:textSize="22sp"
             />
@@ -131,7 +131,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sex: "
+                    android:text="@string/profile_sex"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -140,7 +140,7 @@
                     android:id="@+id/profileSex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Male"
+                    android:text="@string/sex_m"
                     android:textColor="@color/light_green"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -159,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="50dp"
-                    android:text="Male"
+                    android:text="@string/sex_m"
                     android:checked="true"
                     android:textStyle="bold"/>
 
@@ -168,7 +168,7 @@
                     android:textColor="@color/light_green"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Female"
+                    android:text="@string/sex_f"
                     android:textStyle="bold"/>
             </RadioGroup>
         </LinearLayout>
@@ -187,7 +187,7 @@
             android:layout_weight="0.1"
             android:background="@drawable/logout_button_bg"
             android:padding="10dp"
-            android:text="Sign Out"
+            android:text="@string/signout_button_text"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />

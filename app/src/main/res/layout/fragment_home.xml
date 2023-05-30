@@ -23,7 +23,7 @@
             android:layout_marginStart="40dp"
             android:fontFamily="@font/fascinate"
             android:padding="8dp"
-            android:text="Main"
+            android:text="@string/home_title"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"

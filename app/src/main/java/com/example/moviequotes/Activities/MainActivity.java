@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         users = db.getReference("users").child(currentUserId);
 
 
-        Toast.makeText(this,currentUserId,Toast.LENGTH_SHORT).show();
         replaceFragment(new HomeFragment());
         binding.menu.setSelectedItemId(R.id.home);
 

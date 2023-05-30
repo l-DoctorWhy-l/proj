@@ -72,7 +72,7 @@ public class BookFragment extends Fragment {
         quotesArrayList = new ArrayList<>();
         quoteItemAdapter = new FavouritesQuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
-
+        // проверка на наличие интернета и загрузка цитат из firebase
         if(Network.isOnline(requireContext()) && Network.likedQuotesRef != null) {
             Network.likedQuotesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -117,6 +117,7 @@ public class BookFragment extends Fragment {
         return binding.getRoot();
     }
 
+    // добавление цитат в лист
     public void onQuotesLoaded(List<Quote> quotes) {
         while (!quotesArrayList.isEmpty()){
             quoteItemAdapter.notifyItemRemoved(0);
