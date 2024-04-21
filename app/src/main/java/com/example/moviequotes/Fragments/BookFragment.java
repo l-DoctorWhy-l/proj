@@ -87,6 +87,8 @@ public class BookFragment extends Fragment {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 Quote quote = dataSnapshot.getValue(Quote.class);
+                                if (quote == null)
+                                    return;
                                 quote.setFavourite(true);
                                 downloadedQuotesArrayList.add(quote);
                                 quoteDAO

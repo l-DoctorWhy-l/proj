@@ -24,6 +24,11 @@ public class Quote {
         this.favourite = favourite;
         this.id = id;
     }
+    public Quote(String desc, String film, String id) {
+        this.film = film;
+        this.desc = desc;
+        this.id = id;
+    }
 
     public String getId() {
         return id;

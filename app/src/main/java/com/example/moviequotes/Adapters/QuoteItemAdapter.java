@@ -1,14 +1,21 @@
 package com.example.moviequotes.Adapters;
 
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -90,6 +97,11 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
             showQuoteCard(context, quote);
         });
 
+        holder.moreInfo.setOnLongClickListener(v -> {
+            showDeleteQuoteDialog(context, quote);
+            return true;
+        });
+
     }
 
     @Override
@@ -163,6 +175,14 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
         TextView item_desc, item_film;
         item_film = dialog.findViewById(R.id.item_film_more);
         item_desc = dialog.findViewById(R.id.item_desc_more);
+        item_film.setOnLongClickListener(v ->{
+            copyText(item_film.getText().toString());
+            return true;
+        });
+        item_desc.setOnLongClickListener(v ->{
+            copyText(item_desc.getText().toString());
+            return true;
+        });
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         System.out.println(quote.getDesc());
         item_desc.setText(quote.getDesc());
@@ -170,5 +190,30 @@ public class QuoteItemAdapter extends RecyclerView.Adapter<QuoteItemAdapter.MyVi
         dialog.show();
     }
 
+    void showDeleteQuoteDialog(Context context, Quote quote){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.delete_quote_window);
+        Button btn;
+        btn = dialog.findViewById(R.id.delete_button);
+        btn.setOnClickListener(v -> {
+            Network.quotesRef.child(quote.getId()).removeValue().addOnSuccessListener(unused -> {
+                Toast.makeText(context, "Цитата успешно удалена", Toast.LENGTH_SHORT).show();
+            });
+            dialog.cancel();
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+
+    private void copyText(String copiedText) {
+        @SuppressLint("RestrictedApi") android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity(context).getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("TAG",copiedText);
+        clipboard.setPrimaryClip(clip);
+
+    }
+
 
 }
+

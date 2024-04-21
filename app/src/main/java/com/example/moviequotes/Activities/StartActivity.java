@@ -3,6 +3,7 @@ package com.example.moviequotes.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,7 @@ public class StartActivity extends AppCompatActivity {
 
 
         binding.signReg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checked_id) {
                 switch (checked_id){
@@ -128,7 +130,10 @@ public class StartActivity extends AppCompatActivity {
                     return;
                 }
                 binding.errorTextViewReg.setVisibility(View.GONE);
-                Network.mAuth.createUserWithEmailAndPassword(binding.editTextRegEmailAddress.getText().toString(),binding.editTextRegPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                Network.mAuth.createUserWithEmailAndPassword(
+                        binding.editTextRegEmailAddress.getText().toString(),
+                        binding.editTextRegPassword.getText().toString()
+                ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {

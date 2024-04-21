@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,10 +133,13 @@ public class ProfileFragment extends Fragment {
         binding.profileUsername.setText(profile.getUserName());
         binding.profileEmail.setText(profile.getEmail());
         binding.profileSex.setText(profile.getSex());
+        Log.wtf("USER", profile.toString());
         if (profile.getSex().equals("Male")){
             binding.profileImageView.setImageResource(R.drawable.abraham_lincoln);
         } else{
             binding.profileImageView.setImageResource(R.drawable.girl);
         }
+        if(profile.isAdmin)
+            binding.statusTv.setText("ADMIN");
     }
 }

@@ -8,6 +8,7 @@ public class User {
     public String email;
 
     public String sex;
+    public Boolean isAdmin;
 
 
     public String getSex() {
@@ -18,6 +19,25 @@ public class User {
         this.sex = sex;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "likes=" + likes +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", sex='" + sex + '\'' +
+                ", isAdmin=" + isAdmin +
+                '}';
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
     public User() {
     }
 
@@ -26,6 +46,7 @@ public class User {
         this.email = email;
         this.likes = new ArrayList<>(1000);
         this.sex = "Male";
+        this.isAdmin = false;
     }
 
     public String getUserName() {
@@ -38,16 +59,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "likes=" + likes +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", sex='" + sex + '\'' +
-                '}';
     }
 
     public void setEmail(String email) {
