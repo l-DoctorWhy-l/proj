@@ -32,11 +32,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/add_quote_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="Add quote"
+            android:text="@string/add_quote"
             android:textColor="@color/light_red"
             android:textSize="18sp"
             android:textStyle="bold"

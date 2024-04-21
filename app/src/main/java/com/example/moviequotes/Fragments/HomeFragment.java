@@ -11,16 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moviequotes.Entities.User;
 import com.example.moviequotes.Network.Network;
 import com.example.moviequotes.Entities.Quote;
 import com.example.moviequotes.Adapters.QuoteItemAdapter;
@@ -37,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
         db = FirebaseDatabase.getInstance();
         quotesRef = db.getReference().child("quotes");
         likedQuotesRef = db.getReference().child("users").child(currentUserId).child("likes");
+
     }
 
 
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         Network.init();
-
+        getUserDataFromDB();
 
         binding.mainRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.mainRecyclerView.setHasFixedSize(true);
@@ -93,9 +94,7 @@ public class HomeFragment extends Fragment {
         likedQuotesIdList = new ArrayList<>();
         quoteItemAdapter = new QuoteItemAdapter(getContext(),quotesArrayList);
         binding.mainRecyclerView.setAdapter(quoteItemAdapter);
-        binding.addQuoteBtn.setOnClickListener(v -> {
-            showAddQuoteDialog(requireContext());
-        });
+        binding.addQuoteBtn.setOnClickListener(v -> showAddQuoteDialog(requireContext()));
 
         final ValueEventListener likedQuotesListener = Network.createLikedQuotesEventListener(likedQuotesIdList);
 
@@ -143,7 +142,7 @@ public class HomeFragment extends Fragment {
         item_film_et = dialog.findViewById(R.id.item_film_et);
         item_desc_et = dialog.findViewById(R.id.item_desc_et);
         sendBtn = dialog.findViewById(R.id.send_quote);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         sendBtn.setOnClickListener(v -> {
             String quoteDesc = item_desc_et.getText().toString();
@@ -166,7 +165,24 @@ public class HomeFragment extends Fragment {
         dialog.show();
     }
 
+    private void getUserDataFromDB(){
+        ValueEventListener profileDataListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                assert user != null;
+                if(user.isAdmin)
+                    binding.addQuoteBtn.setVisibility(View.VISIBLE);
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        Network.user.addValueEventListener(profileDataListener);
+    }
 
 
 }
